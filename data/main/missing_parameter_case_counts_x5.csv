@@ -1,0 +1,12 @@
+model,task,full,best_simpler,strict_stable_full_only,full_advantage,simpler_match_or_beats,full_unstable,Baseline,Parameter-only,State prompt,Missing guard,Argument validator,Validator guard,Full state-aware
+haiku,multi_turn_miss_param_1,4,4,0,0,1,1,0,0,0,4,0,4,4
+haiku,multi_turn_miss_param_14,5,5,0,0,1,0,0,0,0,5,0,5,5
+haiku,multi_turn_miss_param_6,4,0,0,1,0,1,0,0,0,0,0,0,4
+doubao,multi_turn_miss_param_0,5,5,0,0,1,0,1,0,0,5,0,3,5
+doubao,multi_turn_miss_param_1,5,5,0,0,1,0,0,0,0,5,0,5,5
+doubao,multi_turn_miss_param_14,4,4,0,0,1,1,0,0,0,4,0,4,4
+gpt4o-mini,multi_turn_miss_param_5,2,2,0,0,1,1,0,0,0,2,0,1,2
+qwen,multi_turn_miss_param_1,4,0,0,1,0,1,0,0,0,0,0,0,4
+qwen,multi_turn_miss_param_14,4,0,0,1,0,1,0,0,0,0,0,0,4
+qwen,multi_turn_miss_param_23,0,3,0,0,1,0,0,1,3,2,0,0,0
+qwen,multi_turn_miss_param_7,5,0,1,1,0,0,0,0,0,0,0,0,5

@@ -1,0 +1,8 @@
+arm,label,successes,n,success_rate,ci95_low,ci95_high
+model,Baseline,1,55,0.018182,0.000460,0.097191
+parameter_only_validator,Parameter-only,1,55,0.018182,0.000460,0.097191
+state_aware_prompt,State prompt,3,55,0.054545,0.011393,0.151235
+heuristic_missing_param_guard,Missing guard,27,55,0.490909,0.353536,0.629295
+argument_validator_repair,Argument validator,0,55,0.000000,0.000000,0.064871
+validator_heuristic_guard,Validator guard,22,55,0.400000,0.270229,0.540927
+state_aware_validator_heuristic,Full state-aware,42,55,0.763636,0.629805,0.867721

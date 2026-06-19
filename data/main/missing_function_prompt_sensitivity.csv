@@ -1,0 +1,5 @@
+variant,label,successes,valid_runs
+original,Orig,40,60
+v2,v2,32,60
+v3,v3,18,59
+v4,v4,21,60

@@ -1,0 +1,5 @@
+failure_bucket,count,diagnostic_reading
+DB/final state,31,Final database state or side effect failed after a completed dialogue.
+Turn budget,31,The dialogue exhausted the turn budget before a valid ending.
+Env. assertion,28,A telecom user-side environment assertion failed after attempted configuration.
+Communication,6,A required user-facing communication component failed.

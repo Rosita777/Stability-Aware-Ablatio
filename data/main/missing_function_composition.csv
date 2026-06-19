@@ -1,0 +1,8 @@
+arm,label,successes
+full_state_aware,Full,4
+availability_prompt,Avail,39
+availability_plus_state,+State,30
+availability_plus_missing_guard,+Miss,41
+availability_plus_argument_validator,+Arg,38
+availability_plus_validator_guard,+Guard,39
+availability_plus_full,+Full,31

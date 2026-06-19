@@ -1,0 +1,9 @@
+arm,label,repairs,targeted_failures
+noop_control,No-op control,0,49
+sham_validator_control,Sham validator,1,49
+parameter_only_validator,Parameter-only validator,1,49
+state_aware_prompt,State-aware prompt,1,45
+heuristic_missing_param_guard,Missing guard,7,48
+argument_validator_repair,Argument validator,0,49
+validator_heuristic_guard,Validator guard,7,49
+state_aware_validator_heuristic,Full state-aware validator,11,48

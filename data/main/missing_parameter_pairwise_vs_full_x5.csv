@@ -1,0 +1,7 @@
+comparison,other_arm,full_success_other_fail,full_fail_other_success,both_success,both_fail,discordant,exact_mcnemar_p,missing_pairs
+Full state-aware vs Baseline,model,41,0,1,13,41,9.09495e-13,0
+Full state-aware vs Parameter-only,parameter_only_validator,42,1,0,12,43,1.00044e-11,0
+Full state-aware vs State prompt,state_aware_prompt,42,3,0,10,45,8.65498e-10,0
+Full state-aware vs Missing guard,heuristic_missing_param_guard,21,6,21,7,27,0.00592461,0
+Full state-aware vs Argument validator,argument_validator_repair,42,0,0,13,42,4.54747e-13,0
+Full state-aware vs Validator guard,validator_heuristic_guard,22,2,20,11,24,3.5882e-05,0

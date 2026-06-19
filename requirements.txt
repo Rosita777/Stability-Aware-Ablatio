@@ -1,0 +1,2 @@
+# Offline reproduction uses only the Python standard library.
+# Optional live BFCL reruns require installing BFCL's upstream dependencies.

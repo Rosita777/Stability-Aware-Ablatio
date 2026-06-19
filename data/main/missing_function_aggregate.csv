@@ -1,0 +1,6 @@
+arm,label,selected_x5,all_failures_x3,any_pairs
+baseline,Baseline,6/60,4/345,4/116
+availability_prompt,Availability prompt,41/60,31/347,15/116
+availability_plus_full,Availability + full,31/60,25/347,11/116
+full_state_aware,Full state-aware,0/60,0/347,0/116
+oracle_empty_turn,Oracle empty-turn,43/60,99/345,42/116

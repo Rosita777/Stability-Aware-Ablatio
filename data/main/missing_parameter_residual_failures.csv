@@ -1,0 +1,5 @@
+failure_mode,count
+External state mismatch,3
+Navigation or repair loop,4
+message_api_state_mismatch_or_incomplete_flow,1
+premature_tool_call_on_missing_parameter,5
