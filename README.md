@@ -23,8 +23,8 @@ The default reproduction path does not require GPUs or API calls.
 
 To keep the artifact compact and blind-review safe, this package does not
 include raw provider logs, raw model trajectories, API responses, private API
-configuration, internal reviewer/LLM-audit prompts, or exploratory runs not
-used in the main diagnostic claims.
+configuration, internal exploratory prompts, or runs not used in the main
+diagnostic claims.
 
 The released data are processed records: model family, task id, scaffold arm,
 and repeat success counts. They are sufficient to recompute the headline
