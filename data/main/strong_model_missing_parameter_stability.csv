@@ -1,0 +1,8 @@
+model_name,task_id,n_min,baseline,parameter_only,state_prompt,missing_guard,argument_validator,validator_guard,full_state_aware,baseline_valid,parameter_only_valid,state_prompt_valid,missing_guard_valid,argument_validator_valid,validator_guard_valid,full_state_aware_valid,full_advantage,simpler_match_or_beats_full,full_unstable,strict_stable_full_only
+Doubao2.1,multi_turn_miss_param_14,4,0,0,0,5,0,3,5,5,5,5,5,4,4,5,0,1,0,0
+Doubao2.1,multi_turn_miss_param_7,3,0,1,1,4,1,4,5,3,4,3,5,5,4,5,1,0,0,0
+Doubao2.1,multi_turn_miss_param_8,4,0,0,2,1,0,2,2,5,5,5,5,4,4,5,0,1,1,0
+DeepSeekV4,multi_turn_miss_param_14,5,0,0,0,4,0,5,4,5,5,5,5,5,5,5,0,1,1,0
+DeepSeekV4,multi_turn_miss_param_7,5,5,4,3,5,4,5,5,5,5,5,5,5,5,5,0,1,0,0
+Qwen3.7+,multi_turn_miss_param_14,5,0,0,0,5,0,5,5,5,5,5,5,5,5,5,0,1,0,0
+Qwen3.7+,multi_turn_miss_param_8,5,0,1,1,4,0,4,2,5,5,5,5,5,5,5,0,1,1,0

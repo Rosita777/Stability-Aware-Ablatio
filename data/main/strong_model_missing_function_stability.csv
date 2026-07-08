@@ -1,0 +1,7 @@
+model_name,task_id,n_min,baseline,availability,full_state_aware,availability_full,oracle_guard,baseline_valid,availability_valid,full_state_aware_valid,availability_full_valid,oracle_guard_valid,availability_beats_full,availability_full_beats_full,full_beats_availability,availability_or_combo_matches_full,full_unstable
+DeepSeekV4,multi_turn_miss_func_3,5,0,3,0,2,0,5,5,5,5,5,1,1,0,1,0
+Qwen3.7+,multi_turn_miss_func_10,4,2,2,3,2,1,5,5,5,4,5,0,0,1,0,1
+Qwen3.7+,multi_turn_miss_func_21,5,2,4,1,2,5,5,5,5,5,5,1,1,0,1,1
+Qwen3.7+,multi_turn_miss_func_23,5,1,4,0,1,5,5,5,5,5,5,1,1,0,1,0
+Qwen3.7+,multi_turn_miss_func_24,5,0,2,0,0,3,5,5,5,5,5,1,0,0,1,0
+Qwen3.7+,multi_turn_miss_func_3,5,0,0,0,0,4,5,5,5,5,5,0,0,0,1,0

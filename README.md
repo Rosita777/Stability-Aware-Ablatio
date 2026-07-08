@@ -11,6 +11,8 @@ The release contains the minimal materials needed to reproduce the main paper
 readouts:
 
 - `data/main/`: processed case-arm-repeat count tables and aggregate summaries.
+- `data/examples/`: selected-case manifest and sanitized trajectory summaries
+  for auditing the main case-level readouts.
 - `src/reproduce_main_results.py`: offline reproduction script for main tables
   and figures.
 - `src/bfcl_subset_runner.py`: optional OpenAI-compatible BFCL V4 subset runner
@@ -29,7 +31,12 @@ diagnostic claims.
 The released data are processed records: model family, task id, scaffold arm,
 and repeat success counts. They are sufficient to recompute the headline
 case-level matrices, attribution flags, single-run counterfactual summary,
-missing-function transfer readout, and tau2 sanity check.
+missing-function transfer readout, strong-model calibration, and tau2 external
+stress test.
+
+The examples directory adds human-readable audit context. It identifies the
+selected cases used by the stability readouts and gives a small set of
+paraphrased trajectory summaries, without releasing raw provider responses.
 
 ## Environment
 
@@ -63,7 +70,15 @@ Expected outputs:
 - `outputs/summary.md`
 - `outputs/tables/missing_parameter_stability_table.csv`
 - `outputs/tables/missing_function_aggregate_table.csv`
+- `outputs/tables/strong_model_discovery_summary.csv`
+- `outputs/tables/strong_model_missing_parameter_stability.csv`
+- `outputs/tables/strong_model_missing_function_stability.csv`
+- `outputs/tables/strong_model_missing_parameter_all_failure_x3.csv`
+- `outputs/tables/strong_model_missing_function_all_failure_x3.csv`
 - `outputs/tables/tau2_anchor_table.csv`
+- `outputs/tables/tau2_scaffold_ablation_x5_table.csv`
+- `outputs/tables/tau2_stress_discovery_table.csv`
+- `outputs/tables/tau2_stress_selected_stability_table.csv`
 - `outputs/figures/missing_parameter_case_matrix.svg`
 - `outputs/figures/missing_function_case_matrix.svg`
 - `outputs/figures/missing_function_followups.svg`
@@ -74,7 +89,26 @@ The script also checks the headline values used in the paper:
 - missing-parameter full beats every simpler arm: `4/11`;
 - missing-function availability prompt: `41/60`;
 - missing-function original full state-aware scaffold: `0/60`;
+- strong-model missing-parameter selected stability: full `28/35`, missing
+  guard `28/35`, validator guard `28/32`;
+- strong-model missing-parameter simpler-arm match or beat: `6/7`;
+- strong-model missing-parameter strict full-only repairs: `0/7`;
+- strong-model missing-function selected stability: availability `15/30`,
+  full state-aware `4/30`;
+- strong-model missing-function availability-or-composed arm matches/beats
+  full: `5/6`;
+- strong-model missing-parameter all-failure calibration: missing guard
+  `30/122`, validator guard `27/122`, full `22/121`, simpler match/beat
+  `40/41`;
+- strong-model missing-function all-failure calibration: availability
+  `10/203`, full `3/218`, availability+full `10/223`, availability-or-composed
+  match/beat `83/83`;
 - tau2 partial task-model pairs: `24/48`.
+- tau2 scaffold-ablation simpler-arm match or beat: `9/10`.
+- tau2 external stress-test discovery: standard `19/178`, policy `18/178`,
+  ReAct `6/178`;
+- tau2 external stress-test selected rerun: any scaffold beats standard on
+  `1/7` cases, while standard matches or beats the best scaffold on `6/7`.
 
 ## Optional Live BFCL Reruns
 
@@ -147,9 +181,15 @@ model outputs. Because provider outputs can include long trajectories and
 private routing metadata, this artifact releases processed counts rather than
 raw trajectories.
 
-The tau2 anchor is included only as an external sanity check. The release keeps
-its aggregate stability table and coarse failure taxonomy, not raw simulated
-dialogues.
+For case-level audit, `data/examples/selected_case_manifest.csv` records the
+selection rule, case-arm counts, flags, and source table for each selected case.
+`data/examples/sanitized_trace_examples.md` gives representative paraphrased
+examples that explain how several rows map to tool-use behavior.
+
+The tau2 release includes processed tables for the external stress test:
+complete discovery triples and selected scaffold-repair reruns. It also keeps
+the earlier aggregate stability anchor and coarse failure taxonomy for audit
+context, but not raw simulated dialogues.
 
 ## Double-Blind Notes
 
