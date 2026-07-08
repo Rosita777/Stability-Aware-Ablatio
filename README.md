@@ -32,7 +32,7 @@ The released data are processed records: model family, task id, scaffold arm,
 and repeat success counts. They are sufficient to recompute the headline
 case-level matrices, attribution flags, single-run counterfactual summary,
 missing-function transfer readout, strong-model calibration, and tau2 external
-stress test.
+case-level study.
 
 The examples directory adds human-readable audit context. It identifies the
 selected cases used by the stability readouts and gives a small set of
@@ -75,10 +75,10 @@ Expected outputs:
 - `outputs/tables/strong_model_missing_function_stability.csv`
 - `outputs/tables/strong_model_missing_parameter_all_failure_x3.csv`
 - `outputs/tables/strong_model_missing_function_all_failure_x3.csv`
-- `outputs/tables/tau2_anchor_table.csv`
-- `outputs/tables/tau2_scaffold_ablation_x5_table.csv`
-- `outputs/tables/tau2_stress_discovery_table.csv`
-- `outputs/tables/tau2_stress_selected_stability_table.csv`
+- `outputs/tables/tau2_external_discovery_table.csv`
+- `outputs/tables/tau2_external_selected_stability_table.csv`
+- `outputs/tables/tau2_external_baseflip_control_table.csv`
+- `outputs/tables/tau2_external_regression_control_table.csv`
 - `outputs/figures/missing_parameter_case_matrix.svg`
 - `outputs/figures/missing_function_case_matrix.svg`
 - `outputs/figures/missing_function_followups.svg`
@@ -103,12 +103,17 @@ The script also checks the headline values used in the paper:
 - strong-model missing-function all-failure calibration: availability
   `10/203`, full `3/218`, availability+full `10/223`, availability-or-composed
   match/beat `83/83`;
-- tau2 partial task-model pairs: `24/48`.
-- tau2 scaffold-ablation simpler-arm match or beat: `9/10`.
-- tau2 external stress-test discovery: standard `19/178`, policy `18/178`,
-  ReAct `6/178`;
-- tau2 external stress-test selected rerun: any scaffold beats standard on
-  `1/7` cases, while standard matches or beats the best scaffold on `6/7`.
+- tau2 external case-level discovery: standard `57/180`, policy `62/180`,
+  progress `58/180`, full `61/180`;
+- tau2 standard-arm failures in discovery: `123/180`, with `22` repaired by
+  the full scaffold;
+- tau2 selected rerun: full beats standard on `8/22` cases, simpler arms
+  match or beat full on `18/22`, and strict stable full-only repairs are
+  `0/22`;
+- tau2 base-flip control: standard succeeds at least once on `58/123`
+  one-shot standard failures;
+- tau2 regression control: standard/full/tie is `5/4/9` over one-shot
+  standard-pass/full-fail rows.
 
 ## Optional Live BFCL Reruns
 
@@ -186,10 +191,9 @@ selection rule, case-arm counts, flags, and source table for each selected case.
 `data/examples/sanitized_trace_examples.md` gives representative paraphrased
 examples that explain how several rows map to tool-use behavior.
 
-The tau2 release includes processed tables for the external stress test:
-complete discovery triples and selected scaffold-repair reruns. It also keeps
-the earlier aggregate stability anchor and coarse failure taxonomy for audit
-context, but not raw simulated dialogues.
+The tau2 release includes processed tables for the external case-level study:
+complete discovery triples, selected full-repair reruns, base-flip controls,
+and reverse regression controls. It does not include raw simulated dialogues.
 
 ## Double-Blind Notes
 

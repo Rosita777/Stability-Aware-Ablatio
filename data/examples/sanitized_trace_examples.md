@@ -68,16 +68,3 @@ trajectories.
   wait until the required function becomes available rather than substituting a
   nearby tool. Larger or stronger models can still make premature calls when
   the scaffold pressures them toward immediate tool use.
-
-## E17-TAU2-SCAFFOLD-REPAIR-001: External Stress-Test Repair
-
-- Source row: `selected_case_manifest.csv`,
-  `case_id=E17-TAU2-SCAFFOLD-REPAIR-001`.
-- Count pattern: standard is `2/3`, policy is `3/4`, and ReAct is `2/3`.
-- Interpretation: this is the only selected tau2 row where a scaffold observed
-  rate beats the standard arm, and even here the evidence is partial because
-  long dialogues stopped before five repeats.
-- Sanitized trajectory summary: the scaffold can help a dialogue stay closer
-  to the task policy in some repeats, but the matched reruns do not establish a
-  stable scaffold-specific mechanism. This is why tau2 is treated as an
-  external stress test rather than a second positive scaffold story.

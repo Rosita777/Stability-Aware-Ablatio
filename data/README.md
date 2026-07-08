@@ -59,19 +59,16 @@ and interpretation; quantitative claims should be recomputed from `data/main/`.
 
 ## External tau2 Checks
 
-- `tau2_stress_discovery.csv`:
-  co-equal external tau2 discovery matrix over three domains, twenty tasks per
-  domain, three API models, and three arms.
-- `tau2_stress_selected_stability.csv`:
-  selected reruns for tau2 standard-arm failures repaired by at least one
-  scaffold arm in discovery. Some cells are partial because long dialogues
-  timed out before five repeats.
-
-- `tau2_anchor.csv`:
-  earlier aggregate stability counts over airline, retail, and telecom domains.
-- `tau2_scaffold_ablation_x5.csv`:
-  earlier scaffold-ablation case matrix over standard tau2 LLM agent,
-  policy-reminder prompt, and two-phase ReAct arms with five repeats per
-  case-arm pair.
-- `tau2_failure_taxonomy.csv`:
-  coarse automatic failure taxonomy for failed tau2 anchor records.
+- `tau2_external_discovery.csv`:
+  external tau2 discovery matrix over three domains, twenty tasks per domain,
+  three API models, and four arms: standard, policy reminder, progress guard,
+  and full progress-aware scaffold.
+- `tau2_external_selected_stability.csv`:
+  selected reruns for one-shot standard-arm failures repaired by the full
+  progress-aware scaffold. All selected case-arm cells have five repeats.
+- `tau2_external_baseflip_control.csv`:
+  five-repeat standard-arm reruns for all one-shot standard failures, used to
+  estimate how often a selected standard failure flips under repetition.
+- `tau2_external_regression_control.csv`:
+  five-repeat standard and full-scaffold reruns for one-shot rows where
+  standard succeeds and the full scaffold fails.

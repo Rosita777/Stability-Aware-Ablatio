@@ -1,8 +1,0 @@
-sample_id,domain,model,task_id,standard,policy,react,n_standard,n_policy,n_react,standard_rate,policy_rate,react_rate,policy_rate_beats_standard,react_rate_beats_standard,any_scaffold_rate_beats_standard,standard_rate_matches_or_beats_scaffold,policy_unstable,react_unstable
-E17-TAU2-SCAFFOLD-REPAIR-001,airline,openai/deepseek/deepseek-v4-pro,5,2,3,2,3,4,3,0.6667,0.7500,0.6667,1,0,1,0,1,1
-E17-TAU2-SCAFFOLD-REPAIR-002,airline,openai/deepseek/deepseek-v4-pro,9,4,5,2,4,5,3,1.0000,1.0000,0.6667,0,0,0,1,0,1
-E17-TAU2-SCAFFOLD-REPAIR-003,airline,openai/qwen/qwen3.7-plus,19,1,1,0,3,3,2,0.3333,0.3333,0.0000,0,0,0,1,1,0
-E17-TAU2-SCAFFOLD-REPAIR-004,retail,openai/bytedance/doubao-seed-2-1-pro,12,2,1,0,3,3,2,0.6667,0.3333,0.0000,0,0,0,1,1,0
-E17-TAU2-SCAFFOLD-REPAIR-005,retail,openai/deepseek/deepseek-v4-pro,0,3,3,2,4,5,3,0.7500,0.6000,0.6667,0,0,0,1,1,1
-E17-TAU2-SCAFFOLD-REPAIR-006,retail,openai/deepseek/deepseek-v4-pro,15,5,4,2,5,5,3,1.0000,0.8000,0.6667,0,0,0,1,1,1
-E17-TAU2-SCAFFOLD-REPAIR-007,telecom,openai/bytedance/doubao-seed-2-1-pro,[service_issue]airplane_mode_on[PERSONA:None],5,2,0,5,3,2,1.0000,0.6667,0.0000,0,0,0,1,1,0

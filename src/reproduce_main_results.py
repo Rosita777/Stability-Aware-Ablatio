@@ -182,123 +182,110 @@ def summarize_missing_function(data_dir: Path, tables_dir: Path) -> list[str]:
 
 
 def summarize_tau2(data_dir: Path, tables_dir: Path) -> list[str]:
-    rows = read_csv(data_dir / "tau2_anchor.csv")
-    taxonomy = read_csv(data_dir / "tau2_failure_taxonomy.csv")
-    scaffold_rows = read_csv(data_dir / "tau2_scaffold_ablation_x5.csv")
-    total_success = 0
-    total_runs = 0
-    partial_pairs = 0
-    total_pairs = 0
-    for row in rows:
-        s, n = parse_count_fraction(row["success"])
-        p, q = parse_count_fraction(row["partial_pairs"])
-        total_success += s
-        total_runs += n
-        partial_pairs += p
-        total_pairs += q
-    write_csv(tables_dir / "tau2_anchor_table.csv", rows, ["domain", "model", "success", "partial_pairs"])
+    discovery_rows = read_csv(data_dir / "tau2_external_discovery.csv")
+    selected_rows = read_csv(data_dir / "tau2_external_selected_stability.csv")
+    baseflip_rows = read_csv(data_dir / "tau2_external_baseflip_control.csv")
+    regression_rows = read_csv(data_dir / "tau2_external_regression_control.csv")
+    write_csv(tables_dir / "tau2_external_discovery_table.csv", discovery_rows, list(discovery_rows[0].keys()))
     write_csv(
-        tables_dir / "tau2_scaffold_ablation_x5_table.csv",
-        scaffold_rows,
-        [
-            "domain",
-            "model",
-            "task_id",
-            "standard",
-            "policy",
-            "react",
-            "n",
-            "react_repairs_standard_failure",
-            "react_full_advantage",
-            "simple_match_or_beats_react",
-            "react_unstable",
-            "strict_stable_react_only",
-        ],
+        tables_dir / "tau2_external_selected_stability_table.csv",
+        selected_rows,
+        list(selected_rows[0].keys()),
     )
-    scaffold_totals = {
-        arm: sum(int(row[arm]) for row in scaffold_rows)
-        for arm in ["standard", "policy", "react"]
-    }
-    scaffold_runs = sum(int(row["n"]) for row in scaffold_rows)
-    simple_match = sum(int(row["simple_match_or_beats_react"]) for row in scaffold_rows)
-    react_unstable = sum(int(row["react_unstable"]) for row in scaffold_rows)
-    react_only = sum(int(row["strict_stable_react_only"]) for row in scaffold_rows)
-    lines = [
-        "",
-        "## tau2 earlier anchor context",
-        "",
-        f"- Total success records: {total_success}/{total_runs}.",
-        f"- Partial task-model pairs: {partial_pairs}/{total_pairs}.",
-        (
-            "- tau2 scaffold-ablation x5 aggregate successes: "
-            f"standard={scaffold_totals['standard']}/{scaffold_runs}, "
-            f"policy={scaffold_totals['policy']}/{scaffold_runs}, "
-            f"ReAct={scaffold_totals['react']}/{scaffold_runs}."
-        ),
-        f"- tau2 scaffold-ablation x5 simpler arm matches or beats ReAct on {simple_match}/{len(scaffold_rows)} cases.",
-        f"- tau2 scaffold-ablation x5 ReAct is repeat-unstable on {react_unstable}/{len(scaffold_rows)} cases.",
-        f"- tau2 scaffold-ablation x5 strict stable ReAct-only cases: {react_only}/{len(scaffold_rows)}.",
-        "- Failure taxonomy counts: "
-        + ", ".join(f"{row['failure_bucket']}={row['count']}" for row in taxonomy)
-        + ".",
-    ]
-    stress_discovery_path = data_dir / "tau2_stress_discovery.csv"
-    stress_selected_path = data_dir / "tau2_stress_selected_stability.csv"
-    if stress_discovery_path.exists() and stress_selected_path.exists():
-        stress_rows = read_csv(stress_discovery_path)
-        selected_rows = read_csv(stress_selected_path)
-        write_csv(tables_dir / "tau2_stress_discovery_table.csv", stress_rows, list(stress_rows[0].keys()))
-        write_csv(tables_dir / "tau2_stress_selected_stability_table.csv", selected_rows, list(selected_rows[0].keys()))
+    write_csv(
+        tables_dir / "tau2_external_baseflip_control_table.csv",
+        baseflip_rows,
+        list(baseflip_rows[0].keys()),
+    )
+    write_csv(
+        tables_dir / "tau2_external_regression_control_table.csv",
+        regression_rows,
+        list(regression_rows[0].keys()),
+    )
 
-        stress_totals = {
-            arm: (sum(int(row[arm]) for row in stress_rows), sum(int(row[f"n_{arm}"]) for row in stress_rows))
-            for arm in ["standard", "policy", "react"]
-        }
-        standard_failures = sum(1 for row in stress_rows if int(row["standard"]) == 0)
-        any_scaffold_repairs = sum(int(row["any_scaffold_repairs_standard_failure"]) for row in stress_rows)
-        policy_repairs = sum(int(row["policy_repairs_standard_failure"]) for row in stress_rows)
-        react_repairs = sum(int(row["react_repairs_standard_failure"]) for row in stress_rows)
-        selected_totals = {
-            arm: (sum(int(row[arm]) for row in selected_rows), sum(int(row[f"n_{arm}"]) for row in selected_rows))
-            for arm in ["standard", "policy", "react"]
-        }
-        any_scaffold_beats_standard = sum(int(row["any_scaffold_rate_beats_standard"]) for row in selected_rows)
-        standard_matches_best = sum(int(row["standard_rate_matches_or_beats_scaffold"]) for row in selected_rows)
-        policy_unstable = sum(int(row["policy_unstable"]) for row in selected_rows)
-        react_unstable = sum(int(row["react_unstable"]) for row in selected_rows)
-        lines.extend(
-            [
-                "",
-                "## tau2 external stress test",
-                "",
-                (
-                    "- Discovery over complete triples: "
-                    f"standard={stress_totals['standard'][0]}/{stress_totals['standard'][1]}, "
-                    f"policy={stress_totals['policy'][0]}/{stress_totals['policy'][1]}, "
-                    f"ReAct={stress_totals['react'][0]}/{stress_totals['react'][1]}."
-                ),
-                (
-                    "- Standard-arm failures in discovery: "
-                    f"{standard_failures}/{len(stress_rows)}; scaffold-repaired standard failures: "
-                    f"any={any_scaffold_repairs}, policy={policy_repairs}, ReAct={react_repairs}."
-                ),
-                (
-                    "- Selected rerun observed repeats: "
-                    f"standard={selected_totals['standard'][0]}/{selected_totals['standard'][1]}, "
-                    f"policy={selected_totals['policy'][0]}/{selected_totals['policy'][1]}, "
-                    f"ReAct={selected_totals['react'][0]}/{selected_totals['react'][1]}."
-                ),
-                (
-                    "- Selected rerun case flags: "
-                    f"any scaffold beats standard on {any_scaffold_beats_standard}/{len(selected_rows)} cases; "
-                    f"standard matches/beats the best scaffold on {standard_matches_best}/{len(selected_rows)} cases."
-                ),
-                (
-                    "- Selected rerun instability flags: "
-                    f"policy={policy_unstable}/{len(selected_rows)}, ReAct={react_unstable}/{len(selected_rows)}."
-                ),
-            ]
-        )
+    discovery_totals = {
+        arm: (sum(int(row[arm]) for row in discovery_rows), sum(int(row[f"n_{arm}"]) for row in discovery_rows))
+        for arm in ["standard", "policy", "progress", "full_progress"]
+    }
+    standard_failures = sum(1 for row in discovery_rows if int(row["standard"]) == 0)
+    any_scaffold_repairs = sum(int(row["any_scaffold_repairs_standard_failure"]) for row in discovery_rows)
+    full_repairs = sum(int(row["full_progress_repairs_standard_failure"]) for row in discovery_rows)
+    full_specific = sum(int(row["full_beats_simpler"]) for row in discovery_rows)
+    selected_totals = {
+        arm: (sum(int(row[arm]) for row in selected_rows), sum(int(row[f"n_{arm}"]) for row in selected_rows))
+        for arm in ["standard", "policy", "progress", "full_progress"]
+    }
+    full_beats_standard = sum(int(row["full_rate_beats_standard"]) for row in selected_rows)
+    full_beats_simpler = sum(int(row["full_rate_beats_simpler"]) for row in selected_rows)
+    simpler_matches_full = sum(int(row["simpler_rate_matches_or_beats_full"]) for row in selected_rows)
+    any_scaffold_beats_standard = sum(int(row["any_scaffold_rate_beats_standard"]) for row in selected_rows)
+    standard_matches_best = sum(int(row["standard_rate_matches_or_beats_scaffold"]) for row in selected_rows)
+    full_unstable = sum(int(row["full_progress_unstable"]) for row in selected_rows)
+    strict_full_only = sum(int(row["strict_stable_full_only"]) for row in selected_rows)
+    baseflip_success = sum(int(row["standard"]) for row in baseflip_rows)
+    baseflip_valid = sum(int(row["n_standard"]) for row in baseflip_rows)
+    baseflip_any = sum(int(row["standard_any_success"]) for row in baseflip_rows)
+    baseflip_stable_failure = sum(int(row["standard_stable_failure"]) for row in baseflip_rows)
+    baseflip_unstable = sum(int(row["standard_unstable"]) for row in baseflip_rows)
+    baseflip_stable_success = sum(int(row["standard_stable_success"]) for row in baseflip_rows)
+    regression_standard = sum(int(row["standard"]) for row in regression_rows)
+    regression_standard_valid = sum(int(row["n_standard"]) for row in regression_rows)
+    regression_full = sum(int(row["full_progress"]) for row in regression_rows)
+    regression_full_valid = sum(int(row["n_full_progress"]) for row in regression_rows)
+    regression_standard_wins = sum(int(row["standard_rate_beats_full"]) for row in regression_rows)
+    regression_full_wins = sum(int(row["full_rate_beats_standard"]) for row in regression_rows)
+    regression_ties = sum(int(row["rates_tie"]) for row in regression_rows)
+
+    return [
+        "",
+        "## tau2 external case-level study",
+        "",
+        (
+            "- Discovery over complete triples: "
+            f"standard={discovery_totals['standard'][0]}/{discovery_totals['standard'][1]}, "
+            f"policy={discovery_totals['policy'][0]}/{discovery_totals['policy'][1]}, "
+            f"progress={discovery_totals['progress'][0]}/{discovery_totals['progress'][1]}, "
+            f"full={discovery_totals['full_progress'][0]}/{discovery_totals['full_progress'][1]}."
+        ),
+        (
+            "- Standard-arm failures in discovery: "
+            f"{standard_failures}/{len(discovery_rows)}; scaffold-repaired standard failures: "
+            f"any={any_scaffold_repairs}, full={full_repairs}; full-specific one-shot rows={full_specific}."
+        ),
+        (
+            "- Selected rerun observed repeats: "
+            f"standard={selected_totals['standard'][0]}/{selected_totals['standard'][1]}, "
+            f"policy={selected_totals['policy'][0]}/{selected_totals['policy'][1]}, "
+            f"progress={selected_totals['progress'][0]}/{selected_totals['progress'][1]}, "
+            f"full={selected_totals['full_progress'][0]}/{selected_totals['full_progress'][1]}."
+        ),
+        (
+            "- Selected rerun case flags: "
+            f"full beats standard on {full_beats_standard}/{len(selected_rows)} cases; "
+            f"full beats all simpler arms on {full_beats_simpler}/{len(selected_rows)} cases; "
+            f"simpler arms match/beat full on {simpler_matches_full}/{len(selected_rows)} cases; "
+            f"strict stable full-only={strict_full_only}/{len(selected_rows)}."
+        ),
+        (
+            "- Selected rerun stability controls: "
+            f"any scaffold beats standard on {any_scaffold_beats_standard}/{len(selected_rows)} cases; "
+            f"standard matches/beats the best scaffold on {standard_matches_best}/{len(selected_rows)} cases; "
+            f"full is repeat-unstable on {full_unstable}/{len(selected_rows)} cases."
+        ),
+        (
+            "- Base-flip control over one-shot standard failures: "
+            f"standard={baseflip_success}/{baseflip_valid}; any success={baseflip_any}/{len(baseflip_rows)}, "
+            f"stable failure={baseflip_stable_failure}/{len(baseflip_rows)}, "
+            f"repeat-unstable={baseflip_unstable}/{len(baseflip_rows)}, "
+            f"stable success={baseflip_stable_success}/{len(baseflip_rows)}."
+        ),
+        (
+            "- Regression control over one-shot standard-pass/full-fail rows: "
+            f"standard={regression_standard}/{regression_standard_valid}, "
+            f"full={regression_full}/{regression_full_valid}; "
+            f"standard/full/tie={regression_standard_wins}/{regression_full_wins}/{regression_ties}."
+        ),
+    ]
     return lines
 
 
@@ -550,10 +537,12 @@ def run_checks(summary_text: str) -> None:
         "A simpler arm matches or beats full on 7/11 cases.",
         "Selected x5 availability prompt: 41/60.",
         "Selected x5 original full-state-aware: 0/60.",
-        "Partial task-model pairs: 24/48.",
-        "tau2 scaffold-ablation x5 simpler arm matches or beats ReAct on 9/10 cases.",
-        "Discovery over complete triples: standard=19/178, policy=18/178, ReAct=6/178.",
-        "Selected rerun case flags: any scaffold beats standard on 1/7 cases; standard matches/beats the best scaffold on 6/7 cases.",
+        "Discovery over complete triples: standard=57/180, policy=62/180, progress=58/180, full=61/180.",
+        "Standard-arm failures in discovery: 123/180; scaffold-repaired standard failures: any=34, full=22; full-specific one-shot rows=8.",
+        "Selected rerun observed repeats: standard=71/110, policy=69/110, progress=61/110, full=71/110.",
+        "Selected rerun case flags: full beats standard on 8/22 cases; full beats all simpler arms on 4/22 cases; simpler arms match/beat full on 18/22 cases; strict stable full-only=0/22.",
+        "Base-flip control over one-shot standard failures: standard=166/609; any success=58/123, stable failure=62/123, repeat-unstable=50/123, stable success=8/123.",
+        "Regression control over one-shot standard-pass/full-fail rows: standard=53/90, full=48/90; standard/full/tie=5/4/9.",
         "Missing-parameter selected stability: full=28/35, missing guard=28/35, validator guard=28/32; simpler matches/beats full on 6/7 cases; strict full-only=0/7.",
         "Missing-function selected stability: availability=15/30, full=4/30; availability or availability+full matches/beats full on 5/6 cases.",
         "Missing-parameter all-failure x3 calibration: missing guard=30/122, validator guard=27/122, full=22/121; key simpler arm matches/beats full on 40/41 cases.",
